@@ -1,0 +1,56 @@
+version: "3.8"
+services:
+  name-service:
+    container_name: name-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - ./.m2:/root/.m2
+    ports:
+      - "8761:8761"
+      - "35729:35729"
+      - "8000:8000"
+    working_dir: /app
+    command: sh run.sh
+#  user-service:
+#    container_name: user-service
+##    build:
+##      context: ./user-service
+##      dockerfile: dev.Dockerfile
+#    image: eclipse-temurin:18-jre
+##    build:
+##      context: ./user-service
+##      dockerfile: dev.Dockerfile
+#    ports:
+#      - "8081:8081"
+#      - "35739:35739"
+#      - "8001:8001"
+#    volumes:
+#      - ./user-service/:/app
+#      - ~/.m2:/root/.m2
+#    working_dir: /app/user-service
+#    environment:
+#      EUREKA_URL: http://name-service:8761/eureka
+#    command: './mvnw spring-boot:run'
+#  gateway-service:
+#    container_name:   gateway-service
+#    build:
+#      context: ./gateway-service
+#      dockerfile: dev.Dockerfile
+#    #    image: openjdk:8-jdk-alpine
+#    #    build:
+#    #      context: ./user-service
+#    #      dockerfile: Dockerfile.dev
+#    ports:
+#      - "8080:8080"
+#      - "35749:35749"
+#      - "8002:8002"
+##    volumes:
+##      - .:/app
+##      - ~/.m2:/root/.m2
+##    working_dir: /app/user-service
+#    environment:
+#      EUREKA_URL: http://name-service:8761/eureka
+#  #    command: './mvnw spring-boot:run'
