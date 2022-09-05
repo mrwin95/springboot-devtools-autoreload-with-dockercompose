@@ -24,8 +24,17 @@ spring:
       ddl-auto: update
     generate-ddl: true
     show-sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 server:
   port: ${port:8081}
+
 eureka:
   client:
     register-with-eureka: true

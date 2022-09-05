@@ -1,0 +1,9 @@
+.m2
+.idea
+microservice-auth-app.iml
+/user-service/.m2
+/user-service/target
+/auth-service/target
+/gateway-service/gateway-service.iml
+/name-service/.m2
+/name-service/name-service.iml

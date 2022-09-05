@@ -1,11 +1,28 @@
 spring:
   application:
     name: auth-service
+  devtools:
+    livereload:
+      port: 35759
+      enabled: true
+    remote:
+      restart:
+        enabled: true
+    restart:
+      additional-paths: ./
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 server:
-  port: 8082
+  port: ${PORT:8082}
 
 jwt:
-  secret: Thang
+  secret: BvPHGM8C0ia4uOuxxqPD5DTbWC9F9TWvPStp3pb7ARo0oK2mJ3pd3YG4lxA9i8bj6OTbadwezxgeEByY
 
 eureka:
   client:

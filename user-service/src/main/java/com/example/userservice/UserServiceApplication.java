@@ -5,8 +5,10 @@ import com.example.userservice.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication(scanBasePackages = {"com.example.userservice"})
+@EnableEurekaClient
 public class UserServiceApplication {
 
     public static void main(String[] args) {

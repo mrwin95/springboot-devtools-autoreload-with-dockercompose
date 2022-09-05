@@ -4,53 +4,93 @@ services:
     container_name: name-service
     build:
       context: ./name-service
-      dockerfile: Dockerfile
+      dockerfile: dev.Dockerfile
     volumes:
       - ./name-service/:/app
-      - ./name-service/.m2:/root/.m2
+      - ./.m2/:/root/.m2
     ports:
       - "8761:8761"
       - "35729:35729"
       - "8000:8000"
     working_dir: /app
     command: sh run.sh
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/health"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
+
+  gateway-service:
+    container_name: gateway-service
+    build:
+      context: ./gateway-service
+      dockerfile: dev.Dockerfile
+    ports:
+      - "8080:8080"
+      - "35749:35749"
+      - "8002:8002"
+    volumes:
+      - ./gateway-service/:/app
+      - ./.m2/:/root/.m2
+    working_dir: /app
+    environment:
+      EUREKA_URL: http://name-service:8761/eureka
+    command: sh run.sh
+    depends_on:
+      - name-service
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
+
   user-service:
     container_name: user-service
     build:
       context: ./user-service
       dockerfile: dev.Dockerfile
-#    image: maven:3.8.1-openjdk-17
-#    image: maven:3.6.3-jdk-8
-#    command: mvn spring-boot:run
     ports:
       - "8081:8081"
       - "35739:35739"
       - "8001:8001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/health" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
     volumes:
       - ./user-service/:/app
-#      - ./user-service/:/app:rw
-      - ./user-service/.m2:/root/.m2
+      - ./.m2/:/root/.m2
+    working_dir: /app
+    environment:
+      EUREKA_URL: http://name-service:8761/eureka/
+    command: sh run.sh
+    depends_on:
+      - name-service
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ./auth-service
+      dockerfile: dev.Dockerfile
+    ports:
+      - "8082:8082"
+      - "35759:35759"
+      - "8003:8003"
+    volumes:
+      - ./auth-service/:/app
+      - ./.m2/:/root/.m2
     working_dir: /app
     environment:
       EUREKA_URL: http://name-service:8761/eureka
     command: sh run.sh
-#  gateway-service:
-#    container_name:   gateway-service
-#    build:
-#      context: ./gateway-service
-#      dockerfile: dev.Dockerfile
-#    #    image: openjdk:8-jdk-alpine
-#    #    build:
-#    #      context: ./user-service
-#    #      dockerfile: Dockerfile.dev
-#    ports:
-#      - "8080:8080"
-#      - "35749:35749"
-#      - "8002:8002"
-##    volumes:
-##      - .:/app
-##      - ~/.m2:/root/.m2
-##    working_dir: /app/user-service
-#    environment:
-#      EUREKA_URL: http://name-service:8761/eureka
-#  #    command: './mvnw spring-boot:run'
+    depends_on:
+      - name-service
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/health" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3

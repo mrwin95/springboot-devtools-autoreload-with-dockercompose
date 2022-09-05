@@ -12,4 +12,4 @@ ENV HOME=/app
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
-#COPY run.sh ./
+COPY run.sh ./
