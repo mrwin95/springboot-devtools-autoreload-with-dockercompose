@@ -1,5 +1,6 @@
 package com.example.gateway.filters;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -18,17 +19,22 @@ import java.util.function.Predicate;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class AuthenticationFilter implements GatewayFilter {
-    private List<String> openUrl = List.of("/users/authenticate", "/token");
-    private Predicate<ServerHttpRequest> isSecured = request -> openUrl.stream().noneMatch(uri -> request.getURI().getPath().contains(uri));
+//    private List<String> openUrl = List.of("/users/authenticate", "/token");
+//    private Predicate<ServerHttpRequest> isSecured = request -> openUrl.stream().noneMatch(uri -> request.getURI().getPath().contains(uri));
 
+    private final RouterValidator routerValidator;
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("Inside filter");
         ServerHttpRequest request = exchange.getRequest();
-        if(!isSecured.test(request)) {
+        if(routerValidator.isSecured.test(request)) {
+            if(this.isAuthMissing(request)){
+                return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
+            }
             log.info("secured url {}", request.getURI().getPath());
-            String token = exchange.getResponse().getHeaders().getFirst("token");
+            String token =  this.getAuthHeader(request);//exchange.getResponse().getHeaders().getFirst("token");
             if(StringUtils.isBlank(token)) {
                 log.info("Token is blank: {} ", token);
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
@@ -41,6 +47,10 @@ public class AuthenticationFilter implements GatewayFilter {
             }
         }
         return chain.filter(exchange);
+    }
+
+    private String getAuthHeader(ServerHttpRequest request){
+        return request.getHeaders().getOrEmpty("Authorization").get(0);
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String error, HttpStatus status) {
