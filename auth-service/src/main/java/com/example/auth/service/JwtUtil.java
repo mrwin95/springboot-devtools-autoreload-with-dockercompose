@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.security.Key;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class JwtUtil {
 
     @Value("${jwt.secret}")
@@ -35,12 +37,12 @@ public class JwtUtil {
     public boolean isExpiredToken(String token){
         return this.getExpirationDateFromToken(token).before(new Date());
     }
-    public void generateToken(UserVO userVO, String type){
+    public String generateToken(UserVO userVO, String type){
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", userVO.getUsername());
         claims.put("type", type);
         claims.put("authorities", userVO.getAuthorities());
-        this.doGenerateToken(claims, userVO.getUsername(), type);
+        return this.doGenerateToken(claims, userVO.getUsername(), type);
     }
 
     private String doGenerateToken(Map<String, Object> claims, String username, String type) {
