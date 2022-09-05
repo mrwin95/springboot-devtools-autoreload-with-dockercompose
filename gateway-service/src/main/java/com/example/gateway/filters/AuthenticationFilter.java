@@ -27,13 +27,16 @@ public class AuthenticationFilter implements GatewayFilter {
         log.info("Inside filter");
         ServerHttpRequest request = exchange.getRequest();
         if(!isSecured.test(request)) {
+            log.info("secured url {}", request.getURI().getPath());
             String token = exchange.getResponse().getHeaders().getFirst("token");
             if(StringUtils.isBlank(token)) {
+                log.info("Token is blank: {} ", token);
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
 
             if(this.isAuthMissing(request)){
+                log.info("Authorization header is missed {} ", this.isAuthMissing(request));
                 return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
             }
         }
