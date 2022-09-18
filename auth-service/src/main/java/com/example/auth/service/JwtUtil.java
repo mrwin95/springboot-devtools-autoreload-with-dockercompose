@@ -41,7 +41,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", userVO.getUsername());
         claims.put("type", type);
-        claims.put("authorities", userVO.getAuthorities());
+        claims.put("roles", userVO.getAuthorities());
         return this.doGenerateToken(claims, userVO.getUsername(), type);
     }
 

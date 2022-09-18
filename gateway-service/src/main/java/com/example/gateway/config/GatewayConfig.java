@@ -20,8 +20,10 @@ public class GatewayConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder){
         return builder.routes()
                 .route("auth-service-id", r -> r.path("/auth/**").filters(f -> f.filter(filter))
+//                                .circuitBreaker(config -> config.setName("auth-service-circuit-breaker").setFallbackUri("forward:/auth-service-fallback")))
                         .uri("lb://auth-service"))
                 .route("user-service-id", r -> r.path("/users/**").filters(f -> f.filter(filter))
+//                                .circuitBreaker(config -> config.setName("user-service-circuit-breaker").setFallbackUri("forward:/user-service-fallback")))
                         .uri("lb:/user-service"))
                 .build();
     }

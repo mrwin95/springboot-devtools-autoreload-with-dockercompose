@@ -12,17 +12,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-
     private final AuthService authService;
-
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthRequest authRequest){
         log.info("Inside register method of the AuthController");
         return ResponseEntity.ok(authService.register(authRequest));
+    }
+
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest authRequest){
+        log.info("Inside login");
+        AuthResponse authRequest1 = new AuthResponse();
+        return new ResponseEntity<>(authRequest1, HttpStatus.CREATED);
     }
 }

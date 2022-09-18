@@ -46,6 +46,11 @@ public class UserController {
         return ResponseEntity.ok().body("Test reload hop that?");
     }
 
+    @GetMapping("/secure")
+    public String getSecured(){
+        return "Secured endpoint";
+    }
+
     @Data
     class RoleToUserForm {
         private String username;

@@ -16,29 +16,29 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-@Component
-@Order(-2)
-public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
+//@Component
+//@Order(-2)
+public class GlobalErrorWebExceptionHandler/* extends AbstractErrorWebExceptionHandler*/ {
 
-    public GlobalErrorWebExceptionHandler(GlobalErrorAttributes gea, ApplicationContext applicationContext,
-                                          ServerCodecConfigurer serverCodecConfigurer) {
-        super(gea, new WebProperties.Resources(), applicationContext);
-        super.setMessageWriters(serverCodecConfigurer.getWriters());
-        super.setMessageReaders(serverCodecConfigurer.getReaders());
-    }
-
-    @Override
-    protected RouterFunction<ServerResponse> getRoutingFunction(final ErrorAttributes errorAttributes) {
-        return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
-    }
-
-    private Mono<ServerResponse> renderErrorResponse(final ServerRequest request) {
-
-        final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-
-        return ServerResponse.status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(errorPropertiesMap));
-    }
+//    public GlobalErrorWebExceptionHandler(GlobalErrorAttributes gea, ApplicationContext applicationContext,
+//                                          ServerCodecConfigurer serverCodecConfigurer) {
+//        super(gea, new WebProperties.Resources(), applicationContext);
+//        super.setMessageWriters(serverCodecConfigurer.getWriters());
+//        super.setMessageReaders(serverCodecConfigurer.getReaders());
+//    }
+//
+//    @Override
+//    protected RouterFunction<ServerResponse> getRoutingFunction(final ErrorAttributes errorAttributes) {
+//        return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
+//    }
+//
+//    private Mono<ServerResponse> renderErrorResponse(final ServerRequest request) {
+//
+//        final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+//
+//        return ServerResponse.status(HttpStatus.BAD_REQUEST)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(BodyInserters.fromValue(errorPropertiesMap));
+//    }
 
 }
