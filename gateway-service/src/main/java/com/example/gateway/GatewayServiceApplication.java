@@ -19,15 +19,4 @@ public class GatewayServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayServiceApplication.class, args);
     }
-
-//    @Bean
-//    @ConditionalOnMissingBean(value = ErrorWebExceptionHandler.class, search = SearchStrategy.CURRENT)
-//    @Order(-1)
-//    public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes) {
-//        JsonErrorWebExceptionHandler exceptionHandler = new JsonErrorWebExceptionHandler(errorAttributes,
-//                resourceProperties,
-//                this.serverProperties.getError(),
-//                applicationContext)
-//        return null;
-//    }
 }

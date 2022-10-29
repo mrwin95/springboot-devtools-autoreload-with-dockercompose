@@ -3,8 +3,10 @@ package com.example.auth.config;
 import com.example.auth.filter.JwtFilter;
 import com.example.auth.filter.LoginFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,15 +24,17 @@ import javax.servlet.FilterChain;
 
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
+@Configuration
 public class SecurityConfig {
 
-    private final LoginFilter loginFilter;
-    private final JwtFilter jwtFilter;
+//    @Lazy
+//    @Autowired
+//    private LoginFilter loginFilter;
+//    private final JwtFilter jwtFilter;
     @Bean
     public UserDetailsService userDetailsService(){
         var uds = new InMemoryUserDetailsManager();
-        uds.createUser(User.builder().username("thang").password("{noop}user").build());
+        uds.createUser(User.builder().username("thang").password("{noop}user").roles("USER").build());
         uds.createUser(User.builder().username("admin").password("{noop}user").roles("ADMIN","USER").build());
         return uds;
     }
@@ -47,7 +51,7 @@ public class SecurityConfig {
         http.csrf()
                 .disable();
         http.authorizeRequests().anyRequest().authenticated();
-        http.addFilterAt(loginFilter, BasicAuthenticationFilter.class);
+//        http.addFilterAt(loginFilter, BasicAuthenticationFilter.class);
 //        http.addFilterAt(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
