@@ -10,7 +10,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService{
-
     private final RoleRepo repo;
     @Override
     public Optional<Role> findRoleByName(String name) {
