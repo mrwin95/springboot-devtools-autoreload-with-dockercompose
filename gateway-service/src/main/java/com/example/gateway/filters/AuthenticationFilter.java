@@ -3,7 +3,7 @@ package com.example.gateway.filters;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -26,7 +26,6 @@ import java.util.function.Predicate;
 @RefreshScope
 public class AuthenticationFilter implements GatewayFilter {
     private final RouterValidator routerValidator;
-
     private final JwtUtil jwtUtil;
 
     @Override
