@@ -21,15 +21,15 @@ public class GatewayConfig {
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder){
         return builder.routes()
-                .route("auth-service-id", r -> r.path("/auth-service/**").filters(f -> f.filter(filter))
-//                                .circuitBreaker(config -> config.setName("auth-service-circuit-breaker").setFallbackUri("forward:/auth-service-fallback")))
+                .route("auth-service-id", r -> r.path("/auth-service/**").filters(f -> f.filter(filter)
+                                .circuitBreaker(config -> config.setName("auth-service-circuit-breaker")
+                                        .setFallbackUri("forward:/auth-service-fallback")))
                         .uri("lb://auth-service"))
                 .route("user-service-id", r -> r.path("/user-service/**").filters(f -> f.filter(filter))
 //                                .circuitBreaker(config -> config.setName("user-service-circuit-breaker").setFallbackUri("forward:/user-service-fallback")))
                         .uri("lb:/user-service"))
                 .build();
     }
-
 
     @Bean @LoadBalanced
     public WebClient.Builder webClient(){

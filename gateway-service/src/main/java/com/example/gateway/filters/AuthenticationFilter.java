@@ -33,6 +33,7 @@ public class AuthenticationFilter implements GatewayFilter {
         log.info("Inside filter");
         ServerHttpRequest request = exchange.getRequest();
         if(routerValidator.isSecured.test(request)) {
+            log.info("Valid request----");
             if(this.isAuthMissing(request))
                 return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
             final String token =  this.getAuthHeader(request);

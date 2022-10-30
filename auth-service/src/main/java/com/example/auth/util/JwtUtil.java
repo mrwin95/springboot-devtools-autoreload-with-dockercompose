@@ -1,4 +1,4 @@
-package com.example.auth.service;
+package com.example.auth.util;
 
 import com.example.auth.client.vo.UserVO;
 import io.jsonwebtoken.Claims;

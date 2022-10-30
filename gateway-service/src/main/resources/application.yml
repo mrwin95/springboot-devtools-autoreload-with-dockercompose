@@ -6,13 +6,13 @@ spring:
       discovery:
         locator:
           enabled: true
-#  devtools:
-#    livereload:
-#      port: 35749
-#      enabled: true
-#    remote:
-#      restart:
-#        enabled: true
+  devtools:
+    livereload:
+      port: 35749
+      enabled: true
+    remote:
+      restart:
+        enabled: true
 #    restart:
 #      additional-paths: ./
 #  main:

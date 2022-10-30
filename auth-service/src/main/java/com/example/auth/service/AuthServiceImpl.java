@@ -1,10 +1,9 @@
 package com.example.auth.service;
 
-import com.example.auth.client.UserClient;
 import com.example.auth.client.vo.UserVO;
 import com.example.auth.security.AuthRequest;
 import com.example.auth.security.AuthResponse;
-import com.example.auth.service.AuthService;
+import com.example.auth.util.JwtUtil;
 import io.jsonwebtoken.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

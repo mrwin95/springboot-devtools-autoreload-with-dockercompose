@@ -38,19 +38,18 @@ public class SecurityConfig {
         uds.createUser(User.builder().username("admin").password("{noop}user").roles("ADMIN","USER").build());
         return uds;
     }
-
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
         var dao = new DaoAuthenticationProvider();
         dao.setUserDetailsService(userDetailsService);
         return new ProviderManager(dao);
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable();
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().
+        permitAll();
 //        http.addFilterAt(loginFilter, BasicAuthenticationFilter.class);
 //        http.addFilterAt(jwtFilter, BasicAuthenticationFilter.class);
         return http.build();
